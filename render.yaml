@@ -1,5 +1,5 @@
 # Render Blueprint for CougarConnect.
-# In Render: New + -> Blueprint -> connect the AlumniNetwork repo. Render reads this
+# In Render: New + -> Blueprint -> connect the CougarConnect repo. Render reads this
 # file, creates the service, and prompts for the secret values marked "sync: false".
 services:
   - type: web
