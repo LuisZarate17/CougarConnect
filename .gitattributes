@@ -1,0 +1,6 @@
+   # Blazor components are C# UI code, not static HTML
+   *.razor linguist-language=C#
+
+   # Third-party CSS shipped with the app
+   CougarConnect/CougarConnect/wwwroot/bootstrap/** linguist-vendored
+   CougarConnect/CougarConnect/wwwroot/bootstrap-icons/** linguist-vendored
