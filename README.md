@@ -3,7 +3,7 @@
 > Alumni networking platform for WSU alumni — search graduates, send connection requests, and message the people you connect with.
 
 [![Live demo](https://img.shields.io/badge/Live%20demo-cougarconnect.onrender.com-3FCF8E?style=flat&logo=render&logoColor=white)](https://cougarconnect.onrender.com/Account/Login)
-[![CI](https://github.com/LuisZarate17/AlumniNetwork/actions/workflows/ci.yml/badge.svg)](https://github.com/LuisZarate17/AlumniNetwork/actions/workflows/ci.yml)
+[![CI](https://github.com/LuisZarate17/CougarConnect/actions/workflows/ci.yml/badge.svg)](https://github.com/LuisZarate17/CougarConnect/actions/workflows/ci.yml)
 ![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=csharp&logoColor=white)
 ![.NET 8](https://img.shields.io/badge/.NET%208-512BD4?style=flat&logo=dotnet&logoColor=white)
 ![Blazor](https://img.shields.io/badge/Blazor%20Server-512BD4?style=flat&logo=blazor&logoColor=white)
