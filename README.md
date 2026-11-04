@@ -16,6 +16,18 @@
 
 CougarConnect is a web platform that helps WSU alumni find each other and stay in touch with their alma mater. A single search box matches graduates across name, graduation year, city, major, and company; users send connection requests, exchange messages once connected, and get recommendations for people they may know.
 
+   ## Built by
+
+   Started as a team project for WSU (fall 2024) by
+   [Jonah Jellison](https://github.com/JonahJellison),
+   [Cameron](https://github.com/Cameron1717), and
+   [Luis Zarate](https://github.com/LuisZarate17).
+
+   **What Luis built After.** in 2026: removed
+   hardcoded secrets, migrated to PostgreSQL, added the xUnit suite and CI,
+   containerized and deployed it on Render, and redesigned connections,
+   messaging and notifications.
+
 ## Screenshots
 
 **Alumni search** — one box matches across name, major, city, company, and grad year, with live connection status on every result:
