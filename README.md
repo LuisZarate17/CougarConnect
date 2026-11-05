@@ -23,7 +23,7 @@ CougarConnect is a web platform that helps WSU alumni find each other and stay i
    [Cameron](https://github.com/Cameron1717), and
    [Luis Zarate](https://github.com/LuisZarate17).
 
-   **What Luis built After.** in 2026: removed
+   **What Luis built After in 2026:** removed
    hardcoded secrets, migrated to PostgreSQL, added the xUnit suite and CI,
    containerized and deployed it on Render, and redesigned connections,
    messaging and notifications.
