@@ -16,17 +16,16 @@
 
 CougarConnect is a web platform that helps WSU alumni find each other and stay in touch with their alma mater. A single search box matches graduates across name, graduation year, city, major, and company; users send connection requests, exchange messages once connected, and get recommendations for people they may know.
 
-   ## Built by
+## Built by
 
-   Started as a team project for WSU (fall 2024) by
-   [Jonah Jellison](https://github.com/JonahJellison),
-   [Cameron](https://github.com/Cameron1717), and
-   [Luis Zarate](https://github.com/LuisZarate17).
+Started as a team project for WSU (fall 2024) by
+[Jonah Jellison](https://github.com/JonahJellison),
+[Cameron](https://github.com/Cameron1717) and
+[Luis Zarate](https://github.com/LuisZarate17).
 
-   **What Luis built After in 2026:** removed
-   hardcoded secrets, migrated to PostgreSQL, added the xUnit suite and CI,
-   containerized and deployed it on Render, and redesigned connections,
-   messaging and notifications.
+**What Luis built.** After the class, solo in 2026: removed hardcoded secrets,
+migrated to PostgreSQL, added the xUnit suite and CI, containerized and deployed
+it on Render, and redesigned connections, messaging and notifications.
 
 ## Screenshots
 
@@ -44,12 +43,12 @@ CougarConnect is a web platform that helps WSU alumni find each other and stay i
 
 ## Features
 
-- **Alumni search** — one search box matches across name, grad year, city, major, and company (case-insensitive partial match), so you don't have to pick a field first.
-- **Connection requests** — send a request with a subject and message; the recipient accepts or declines in-app on the Recent Activity page or via a tokenized link emailed to them.
-- **Direct messaging** — once two alumni connect, they can exchange messages one-on-one, with unread indicators surfaced on the Connections page.
-- **People you may know** — recommendations built from the alumni directory, excluding yourself and people you're already connected to.
-- **Notifications & recent activity** — a running feed of incoming requests and updates.
-- **Secure accounts** — registration with email verification and optional two-factor authentication, built on ASP.NET Core Identity.
+* **Alumni search** — one search box matches across name, grad year, city, major, and company (case-insensitive partial match), so you don't have to pick a field first.
+* **Connection requests** — send a request with a subject and message; the recipient accepts or declines in-app on the Recent Activity page or via a tokenized link emailed to them.
+* **Direct messaging** — once two alumni connect, they can exchange messages one-on-one, with unread indicators surfaced on the Connections page.
+* **People you may know** — recommendations built from the alumni directory, excluding yourself and people you're already connected to.
+* **Notifications & recent activity** — a running feed of incoming requests and updates.
+* **Secure accounts** — registration and sign-in with optional two-factor authentication, built on ASP.NET Core Identity. Email confirmation is off on the live demo (see [DECISIONS.md §5](DECISIONS.md)).
 
 ## Architecture
 
@@ -65,6 +64,8 @@ graph TD
     SB --- T[AspNetUsers/accounts, 2FA<br/>Alumni, Messages,<br/>ConnectionRequests, Notifications]
     BS --> EM[EmailSender] --> SMTP[SMTP / Gmail]
 ```
+
+Why it's built this way, and what each choice costs: **[DECISIONS.md](DECISIONS.md)**.
 
 ## Getting Started
 
@@ -112,7 +113,7 @@ The app reads its configuration from `CougarConnect/CougarConnect/appsettings.js
 | `Email:FromAddress` | The email address emails are sent from. |
 | `Email:AppPassword` | Must be a Gmail **App Password**, not your real account password — generate one at https://myaccount.google.com/apppasswords (requires 2-Step Verification enabled). |
 | `Supabase:Url` | The REST endpoint for your Supabase project (e.g. `https://your-project.supabase.co`), found under Project Settings > API. |
-| `Supabase:ApiKey` | The Supabase API key used to authenticate REST calls to the `Alumni` table, also found under Project Settings > API. |
+| `Supabase:ApiKey` | The Supabase anon key, used server-side for every REST call to the domain tables (`Alumni`, `Messages`, `ConnectionRequests`, `Notifications`). Found under Project Settings > API. |
 
 ## Running Tests
 
@@ -127,3 +128,10 @@ Every push and pull request runs this suite on GitHub Actions ([`.github/workflo
 ## Deployment
 
 The [live demo](https://cougarconnect.onrender.com/Account/Login) runs as a Docker container on [Render](https://render.com)'s free tier, backed by the Supabase Postgres database described above. The [`Dockerfile`](Dockerfile) publishes the Blazor Server app; on startup it applies the Identity EF Core migrations and (when `DemoData:Seed` is set) seeds the ready-to-use demo account. Configuration — the Supabase connection string, anon key, and demo flag — is supplied through the host's environment variables, never committed. A [`render.yaml`](render.yaml) blueprint documents the service definition.
+
+## What I'd do differently
+
+* **One data-access path.** Identity goes through EF Core and the domain tables go through PostgREST. That's two schema owners and no transaction that spans both. I'd move the domain tables into EF Core.
+* **Index search from the start.** The one-box search is a leading-wildcard `ILIKE`, which scans the whole `Alumni` table. A `pg_trgm` index would keep it fast as the directory grows.
+* **Run migrations out of band.** Applying them at startup means any deploy can change the live schema with no review step. My later project, [labqueue](https://github.com/LuisZarate17/labqueue), runs them as a separate step.
+* **A real email provider.** Confirmation is off because the only sender is a shared Gmail credential. A transactional email service would let it come back on.
